@@ -146,6 +146,7 @@ The first seven rows of [Pascal's triangle](http://mathworld.wolfram.com/Pascals
 >1 6 15 20 15 6 1
 
 Complete the skeleton code given below to store the numbers from the first three rows of Pascal's triangle in a two-dimensional &quot;array&quot; using dynamic memory allocation. Note that you must allocate exactly six memory slots to store those six numbers. No extra memory should be allocated. At the end of your program, free all the memory blocks used in this program.
+Bonus: Use &quot;row&quot; variable to expand the Pascal's Triangle(i.e row = 5 or row = 8) without hard coding the Triangle 
 
 
 Tutorial Code
@@ -156,29 +157,50 @@ Tutorial Code
 
     int main() {
         int i, j;
+        int row = 3;
         /* TODO: define the 2D pointer variable here */
 
         /* TODO: complete the following line to allocate memory for holding three rows */
-        pnumbers = (int **) malloc();
+        pnumbers = (int **) malloc(row * sizeof(int));
 
         /* TODO: allocate memory for storing the individual elements in a row */
-        pnumbers[0] = (int *) malloc(1 * sizeof(int));
-
+        //pnumbers[0] = (int *) malloc(1 * sizeof(int));
+        for(i = 0; i < row; i++){
+            pnumbers[i] = (int *) malloc((i+1) * sizeof(int));
+        }
+        
+        /*
         pnumbers[0][0] = 1;
         pnumbers[1][0] = 1;
         pnumbers[1][1] = 1;
         pnumbers[2][0] = 1;
         pnumbers[2][1] = 2;
-        pnumbers[2][2] = 1;
-
-        for (i = 0; i < 3; i++) {
+        pnumbers[2][2] = 1;*/
+        
+        /* TODO: Complete the triangle's elements */
+        for(i = 0; i < row; i++){
+            for(j = 0; j <= i; j++){
+                if(i == j){
+                    pnumbers[i][j] = ; //Think right side of the triangle
+                    continue;
+                }
+                else if(j == 0){
+                    pnumbers[i][j] = ; //Think left side of the triangle
+                    continue;
+                }
+                //Build middle ones in the triangle
+                pnumbers[i][j] = pnumbers[][j-1] + pnumbers[i-1][]; 
+            }
+        }
+        
+        for (i = 0; i < row; i++) {
             for (j = 0; j <= i; j++) {
-                printf("%d", pnumbers[i][j]);
+                printf("%d ", pnumbers[i][j]);
             }
             printf("\n");
         }
 
-        for (i = 0; i < 3; i++) {
+        for (i = 0; i < row; i++) {
             /* TODO: free memory allocated for each row */
         }
 
@@ -191,8 +213,8 @@ Expected Output
 ---------------
 
     1
-    11
-    121
+    1 1
+    1 2 1
 
 Solution
 --------
@@ -202,36 +224,54 @@ Solution
 
     int main() {
         int i, j;
+        int row = 8;
         /* TODO: define the 2D pointer variable here */
-        int **pnumbers;
+        int **pnumbers = (int **)malloc(row * sizeof(int*));
 
-        /* TODO: Complete the following line to allocate memory for holding three rows */
-        pnumbers = (int **) malloc(3  *sizeof(int *));
+        /* TODO: complete the following line to allocate memory for holding three rows */
+        //pnumbers = (int **) malloc();
 
-        /* TODO: Allocate memory for storing the individual elements in a row */
-        pnumbers[0] = (int *) malloc(1 * sizeof(int));
-        pnumbers[1] = (int *) malloc(2 * sizeof(int));
-        pnumbers[2] = (int *) malloc(3 * sizeof(int));
+        /* TODO: allocate memory for storing the individual elements in a row */
+        /*pnumbers[0] = (int *) malloc(1 * sizeof(int));
+          pnumbers[1] = (int *) malloc(2 * sizeof(int));
+          pnumbers[2] = (int *) malloc(3 * sizeof(int));*/
+          
+        for (i = 0; i < row; i++) {
+            pnumbers[i] = (int *)malloc((i + 1) * sizeof(int));
+        }
 
-        pnumbers[0][0] = 1;
-        pnumbers[1][0] = 1;
-        pnumbers[1][1] = 1;
-        pnumbers[2][0] = 1;
-        pnumbers[2][1] = 2;
-        pnumbers[2][2] = 1;
-
-        for (i = 0; i < 3; i++) {
+        /*
+        pnumbers[0][0] = 1; pnumbers[1][0] = 1; pnumbers[1][1] = 1;
+        pnumbers[2][0] = 1;pnumbers[2][1] = 2; pnumbers[2][2] = 1;*/
+        
+        /* TODO: Complete the triangle's elements */
+        for (i = 0; i < row; i++) {
             for (j = 0; j <= i; j++) {
-                printf("%d", pnumbers[i][j]);
+                if (i == j) {
+                    pnumbers[i][j] = 1; continue; //Think right side of the triangle
+                }
+                else if (j == 0) {
+                    pnumbers[i][j] = 1; continue; //Think left side of the triangle
+                }
+                //Build middle ones in the triangle
+                pnumbers[i][j] = pnumbers[i - 1][j - 1] + pnumbers[i - 1][j]; 
+
+            }
+        }
+
+        for (i = 0; i < row; i++) {
+            for (j = 0; j <= i; j++) {
+                printf("%d ", pnumbers[i][j]);
             }
             printf("\n");
         }
 
-        for (i = 0; i < 3; i++) {
+        for (i = 0; i < row; i++) {
+            /* TODO: free memory allocated for each row */
             free(pnumbers[i]);
         }
-
+        
+        /* TODO: free the top-level pointer */
         free(pnumbers);
-
-      return 0;
+        return 0;
     }
